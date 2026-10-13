@@ -25,7 +25,7 @@ print(common_column_name)
 
 #joining the datasets into one big dataset
 df = businesses
-for i in range(1, len(dataframes) - 1): 
+for i in range(len(dataframes) - 1): 
     df = pd.merge(df, dataframes[i+1], how='left', on=common_column_name)
 
 
@@ -47,6 +47,8 @@ print(df.shape)
 
 #replacing missing values with 0 
 df.fillna(0)
+
+
 
 
 

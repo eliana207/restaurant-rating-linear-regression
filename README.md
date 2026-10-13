@@ -22,11 +22,13 @@ Building a multiple linear regression model to analyse which factors impact rest
 
 ## Steps
 
-1. Set up the project
+1. Setting up the project
 
-2. Merge the datasets
+2. Merging the datasets
 
-3. Clean the data
+3. Cleaning the data
+
+4. Checking what features best correlate to help in training the ML model 
 
 
 ## Log and Choices made
