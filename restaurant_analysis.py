@@ -10,26 +10,46 @@ from sklearn.linear_model import LinearRegression
 
 businesses = pd.read_json('yelp_business.json', lines = True)
 checkins = pd.read_json('yelp_checkin.json', lines = True)
-data = pd.read_json('yelp_data.json', lines = True)
 photos = pd.read_json('yelp_photo.json', lines = True)
 review = pd.read_json('yelp_review.json', lines = True)
 tips = pd.read_json('yelp_tip.json', lines = True)
 users = pd.read_json('yelp_user.json', lines = True)
 
-dataframes = [businesses, checkins, data, photos, review, tips, users]
+dataframes = [businesses, checkins, photos, review, tips, users]
 #check which columns the datasets have in common: 
 
-common_column = set(businesses.columns.to_list()) & set(checkins.columns.to_list()) & set(data.columns.to_list()) & set(photos.columns.to_list()) & set(review.columns.to_list()) & set(tips.columns.to_list()) & set(users.columns.to_list())
+common_column = set(businesses.columns.to_list()) & set(checkins.columns.to_list()) & set(photos.columns.to_list()) & set(review.columns.to_list()) & set(tips.columns.to_list()) & set(users.columns.to_list()) #TODO: must be better way to handle this
 
 common_column_name = next(iter(common_column))
-
-print("len common: ", len(common_column))
+print(common_column_name)
 
 #joining the datasets into one big dataset
 df = businesses
-for i in range(len(dataframes) - 1): 
-    df = pd.merge(df, dataframes[i+1], how='outer', on=common_column_name)
+for i in range(1, len(dataframes) - 1): 
+    df = pd.merge(df, dataframes[i+1], how='left', on=common_column_name)
+
+
 
 columns = df.columns.to_list()
 for i in range(len(columns)):
     print(i, columns[i])
+
+
+#Cleaning dataset:
+
+
+features_to_remove = ['address','attributes','business_id','categories','city','hours','is_open','latitude','longitude','name','neighborhood','postal_code','state','time']
+
+print(df.shape)
+#dropping columns that are not binary or continuous variables
+df.drop(features_to_remove, axis=1, inplace=True)
+print(df.shape)
+
+#replacing missing values with 0 
+df.fillna(0)
+
+
+
+
+
+
